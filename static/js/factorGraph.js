@@ -3,7 +3,13 @@ function Chat(){
   self.log = document.getElementById('chat_log')
   self.input = document.getElementById('chat_input')
   self.socket = io.connect('http://' + document.domain + ':' + location.port + '/chat');
-  // self.session_id = Math.ceil(Math.random()*Math.pow(16, 8)).toString(16)
+  self.session_id = Math.ceil(Math.random()*Math.pow(16, 8)).toString(16)
+  const displacy = new displaCy('127.0.0.1:5000', {
+    container: '#displacy',
+    format: 'spacy',
+    distance: 300,
+    offsetX: 100
+  });
 
   self.logMessage = function(content, sender){
     var msg_dom = document.createElement('div')
@@ -28,12 +34,10 @@ function Chat(){
 
   self.socket.on('msg_agent', function(msg){
     self.logMessage(msg.content, 'agent')
+
+    displacy.render(msg.parse, {
+      color: '#ff0000'
+    });
   });
 
-  const displacy = new displaCy('127.0.0.1:5000', {
-    container: '#displacy',
-    format: 'spacy',
-    distance: 300,
-    offsetX: 100
-  });
 }
