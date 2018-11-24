@@ -4,6 +4,8 @@
     <title>Factor Graph</title>
     <link href="static/css/lib/vis-network.min.css" rel="stylesheet" type="text/css" />
     <link href="static/css/style.css" rel="stylesheet" type="text/css" />
+    <!-- <link rel="shortcut icon" href="{{ url_for('static', filename='img/favicon.ico') }}"> -->
+    <link rel="shortcut icon" href='static/img/favicon.ico'>
   </head>
   <body>
     <div id="chat">
@@ -27,32 +29,6 @@
 <script type="text/javascript" src="static/js/lib/vis-network.min.js"></script>
 <script type="text/javascript" src="static/js/factorGraph.js"></script>
 <script type=text/javascript>
-  // create an array with nodes
-  var nodes = new vis.DataSet([
-  {id: 1, label: 'Node 1'},
-  {id: 2, label: 'Node 2'},
-  {id: 3, label: 'Node 3'},
-  {id: 4, label: 'Node 4'},
-  {id: 5, label: 'Node 5'}
-  ]);
-
-  // create an array with edges
-  var edges = new vis.DataSet([
-  {from: 1, to: 3, label: "causes", arrows: "to"},
-  {from: 1, to: 2, label: "causes", arrows: "to"},
-  {from: 2, to: 4, label: "causes", arrows: "to"},
-  {from: 2, to: 5, label: "causes", arrows: "to"},
-  {from: 3, to: 3, label: "causes", arrows: "to"}
-  ]);
-
-  // create a network
-  var container = document.getElementById('mynetwork');
-  var data = {
-    nodes: nodes,
-    edges: edges
-  };
-  var options = {};
-  var network = new vis.Network(container, data, options);
 
   window.onload = function(){
   	window.chat = new Chat();
