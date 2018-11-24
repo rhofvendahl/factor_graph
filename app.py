@@ -19,6 +19,12 @@ print('loading en_core_web_md...')
 nlp = spacy.load('en_core_web_sm')
 print('done')
 
+import clausiepy as clausie
+clauses = clausie.clausie('Albert Einstein died in Princeton in 1955.')
+print(clauses)
+propositions = clausie.extract_propositions(clauses)
+clausie.print_propositions(propositions)
+
 @app.route('/')
 def index():
     return render_template('index.html')
@@ -35,8 +41,8 @@ def test_message(msg):
 
     doc = nlp(content)
 
-    for token in doc:
-        print(token.text, token.lemma_, token.pos_, token.tag_, token.dep_, token.shape_, token.is_alpha, token.is_stop)
+    for chunk in doc.noun_chunks:
+        print(chunk.text, chunk.root.pos_)
 
     # nodes = []
     # for chunk in doc.noun_chunks:
@@ -47,10 +53,17 @@ def test_message(msg):
     nodes = []
     edges = []
     for token in doc:
+        if token.pos_ in ['PRON', 'NOUN']:
+            color = 'pink'
+        elif token.pos_ == 'VERB':
+            color = 'lightblue'
+        else:
+            color = 'lightgrey'
         nodes += [{
             'id': token.idx,
             'label': token.text,
-            'title': token.pos_
+            'title': token.pos_,
+            'color': color
         }]
         edges += [{
             'from': token.head.idx,
@@ -58,6 +71,16 @@ def test_message(msg):
             'label': token.dep_,
             'arrows': 'to'
         }]
+
+    clauses = clausie.clausie(content)
+    for clause in clauses:
+        print(clause)
+    propositions = clausie.extract_propositions(clauses)
+    print(type(propositions[0]['subject']))
+    print('AAAAAAAAAAAAAAAAAAAAAAAAA')
+    for proposition in propositions:
+        print(proposition)
+    clausie.print_propositions(propositions)
 
     emit('msg_agent', {
         'content': content + content + content,

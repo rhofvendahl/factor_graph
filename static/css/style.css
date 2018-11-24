@@ -65,8 +65,8 @@ body {
 }
 
 #mynetwork {
-  width: 600px;
-  height: 400px;
+  width: 80%;
+  height: 100%;
   border: 1px solid lightgray;
 }
 
@@ -74,4 +74,5 @@ body {
   overflow-x: scroll;
   overflow-y: scroll;
   height: 400px;
+  z-index: 1000;
 }
