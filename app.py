@@ -23,7 +23,6 @@ print('done')
 def index():
     return render_template('index.html')
 
-
 @socketio.on('msg_user', namespace='/chat')
 def test_message(msg):
     content = msg['content']
@@ -39,9 +38,32 @@ def test_message(msg):
     for token in doc:
         print(token.text, token.lemma_, token.pos_, token.tag_, token.dep_, token.shape_, token.is_alpha, token.is_stop)
 
+    # nodes = []
+    # for chunk in doc.noun_chunks:
+    #     nodes += [{'id': chunk.text, 'label': chunk.text}]
+    #     edges += [{'from': chunk.root.head.text, 'to': chunk.text, 'arrow'}]
+    #     COUNTER += 1
+
+    nodes = []
+    edges = []
+    for token in doc:
+        nodes += [{
+            'id': token.idx,
+            'label': token.text,
+            'title': token.pos_
+        }]
+        edges += [{
+            'from': token.head.idx,
+            'to': token.idx,
+            'label': token.dep_,
+            'arrows': 'to'
+        }]
+
     emit('msg_agent', {
         'content': content + content + content,
-        'parse': displacy.parse_deps(doc)
+        'parse': displacy.parse_deps(doc),
+        'nodes': nodes,
+        'edges': edges
     })
 
 if __name__ == "__main__":
